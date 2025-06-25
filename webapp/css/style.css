@@ -1,1 +1,22 @@
 /* Enter your custom styles here */
+/* ... existing code ... */
+
+/* 自适应布局：小屏幕下一列显示 */
+.responsiveGrid {
+    /* 默认两列 */
+    grid-template-columns: 1fr 1fr !important;
+  }
+  
+  @media (max-width: 900px) {
+    .responsiveGrid {
+      grid-template-columns: 1fr !important; /* 小屏幕下变为一列 */
+    }
+  }
+  
+  /* Card 宽度自适应，覆盖常见 class */
+  .responsiveGrid .sapFCard,
+  .responsiveGrid .sapF_Card {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
