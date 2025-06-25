@@ -21,6 +21,9 @@ sap.ui.define([
                 var oVizFrame = this.byId("idVizFrame");
                 // 隐藏标题
                 if (oVizFrame) {
+                    window.addEventListener("resize", function() {
+                    oVizFrame.rerender();
+                    });
                     // 使用 setVizProperties 设置标题可见性为 false
                     oVizFrame.setVizProperties({
                         title: {

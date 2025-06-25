@@ -13,10 +13,52 @@
     }
   }
   
-  /* Card 宽度自适应，覆盖常见 class */
-  .responsiveGrid .sapFCard,
-  .responsiveGrid .sapF_Card {
+/* 保证 Card 内容区和 VizFrame 都能自适应 */
+.responsiveGrid .sapFCard,
+.responsiveGrid .sapF_Card {
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.responsiveGrid .sapFCard .sapFCardContent,
+.responsiveGrid .sapF_Card .sapFCardContent {
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  padding: 0 !important;
+}
+
+.responsiveGrid .sapFCard .sapUiVizFrame,
+.responsiveGrid .sapF_Card .sapUiVizFrame {
+  width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+.responsiveGrid .sapFCard .sapFCardContent,
+.responsiveGrid .sapF_Card .sapFCardContent {
+  overflow-x: auto !important;
+}
+/* Table 容器自适应宽度 */
+.responsiveTable {
     width: 100% !important;
     min-width: 0 !important;
     box-sizing: border-box !important;
+    display: block !important;
+    overflow-x: auto !important;
+  }
+  
+  /* Table 内部内容自适应 */
+  .responsiveTable .sapMListTblRow,
+  .responsiveTable .sapMListTblCell {
+    white-space: nowrap !important;
+  }
+  
+  /* 小屏幕下，表头和单元格字体缩小 */
+  @media (max-width: 900px) {
+    .responsiveTable .sapMListTblCell,
+    .responsiveTable .sapMListTblHeaderCell {
+      font-size: 12px !important;
+      padding: 4px !important;
+    }
   }

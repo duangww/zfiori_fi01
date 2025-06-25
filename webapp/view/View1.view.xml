@@ -138,7 +138,7 @@
                                 <f:content>
                                     <Table
                                         id="Table1"
-                                        class="sapUiSmallMarginBottom"
+                                        class="sapUiSmallMarginBottom responsiveTable"
                                         items="{
                                                 path: 'FiData>/0/data'
                                             }"
@@ -146,32 +146,49 @@
                                         <columns>
                                             <Column
                                                 id="idColumn1"
-                                                width="12em"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
                                             >
                                                 <Text
                                                     id="idText1"
                                                     text="年月"
                                                 />
                                             </Column>
-                                            <Column id="idColumn2">
+                                            <Column
+                                                id="idColumn2"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            >
                                                 <Text
                                                     id="idText2"
                                                     text="销售总额"
                                                 />
                                             </Column>
-                                            <Column id="idColumn3">
+                                            <Column
+                                                id="idColumn3"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            >
                                                 <Text
                                                     id="idText3"
                                                     text="成本总额"
                                                 />
                                             </Column>
-                                            <Column id="idColumn4">
+                                            <Column
+                                                id="idColumn4"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            >
                                                 <Text
                                                     id="idText4"
                                                     text="应付总额"
                                                 />
                                             </Column>
-                                            <Column id="idColumn5">
+                                            <Column
+                                                id="idColumn5"
+                                                minScreenWidth="Tablet"
+                                                demandPopin="true"
+                                            >
                                                 <Text
                                                     id="idText5"
                                                     text="应收总额"
