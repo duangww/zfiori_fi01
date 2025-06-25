@@ -139,6 +139,7 @@
                                     <Table
                                         id="Table1"
                                         class="sapUiSmallMarginBottom responsiveTable"
+                                        mode="SingleSelectMaster"
                                         items="{
                                                 path: 'FiData>/0/data'
                                             }"
