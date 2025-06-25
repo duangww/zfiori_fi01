@@ -7,7 +7,7 @@
 |**Generation Platform**<br>Visual Studio Code|
 |**Template Used**<br>simple|
 |**Service Type**<br>OData Url|
-|**Service URL**<br>http://192.168.1.164:8020/sap/opu/odata/sap/ZPDA_STOCK_SRV/
+|**Service URL**<br>http://ip:port/sap/opu/odata/sap/ZPDA_STOCK_SRV/
 |**Module Name**<br>zfiori_fi01|
 |**Application Title**<br>抚州财务指标程序|
 |**Namespace**<br>|
@@ -19,7 +19,7 @@
 
 ## zfiori_fi01
 
-抚州财务指标程序
+财务指标程序
 
 ### Starting the generated app
 
