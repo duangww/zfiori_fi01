@@ -9,7 +9,7 @@
 |**Service Type**<br>OData Url|
 |**Service URL**<br>http://ip:port/sap/opu/odata/sap/ZPDA_STOCK_SRV/
 |**Module Name**<br>zfiori_fi01|
-|**Application Title**<br>抚州财务指标程序|
+|**Application Title**<br>财务指标程序|
 |**Namespace**<br>|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.120.23|
