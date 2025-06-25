@@ -1,4 +1,5 @@
-<mvc:View controllerName="zfiorifi01.controller.View1"
+<mvc:View
+    controllerName="zfiorifi01.controller.View1"
     xmlns:mvc="sap.ui.core.mvc"
     displayBlock="true"
     xmlns="sap.m"
@@ -10,135 +11,158 @@
     xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
     xmlns:viz.data="sap.viz.ui5.data"
     xmlns:layout="sap.ui.layout"
-    xmlns:cssgrid="sap.ui.layout.cssgrid">
+    xmlns:cssgrid="sap.ui.layout.cssgrid"
+>
     <Page id="page">
         <content>
             <IconTabBar
                 id="idIconTabBar"
                 select="handleIconTabBarSelect"
                 headerBackgroundDesign="Transparent"
-                class="sapUiResponsiveContentPadding sapUiSmallMarginBegin">
+                class="sapUiResponsiveContentPadding sapUiSmallMarginBegin"
+            >
                 <items>
                     <IconTabFilter text="{FiData>/0/butxt}财务指标">
-                        <layout:VerticalLayout width="100%">
-                            <cssgrid:CSSGrid
-                                class="sapUiResponsiveMediumContainerWidth"
-                                gridTemplateColumnsL="repeat(2, 1fr)"
-                                gridTemplateColumnsM="repeat(2, 1fr)"
-                                gridTemplateColumnsS="1fr"
-                                gap="1rem">
-                                <!-- <f:layout>
-                                <f:GridContainerSettings rowSize="5rem" columnSize="5rem" gap="1rem" />
-                            </f:layout> -->
-                                <!-- <f:layoutS>
-                                <f:GridContainerSettings rowSize="5rem" columnSize="5rem"
-                                    gap="0.5rem" />
-                            </f:layoutS> -->
-                                <!-- <w:Card manifest="{manifests>/stackedColumn}">
-                                <w:layoutData>
-                                    <f:GridContainerItemLayoutData rows="5" columns="4" />
-                                </w:layoutData>
-                            </w:Card> -->
-                                <f:Card class="sapUiTinyMargin">
-                                    <f:header>
-                                        <card:Header
-                                            title="月度数据推移图" />
-                                    </f:header>
-                                    <f:content>
-                                        <viz:VizFrame id="idVizFrame"
-                                            uiConfig="{applicationSet:'fiori'}"
-                                            height="400px" width="100%" vizType='line'>
-                                            <viz:dataset>
-                                                <viz.data:FlattenedDataset data="{FiData>/0/data}">
-                                                    <viz.data:dimensions>
-                                                        <viz.data:DimensionDefinition name="年月"
-                                                            value="{FiData>yearMonth}" />
-                                                    </viz.data:dimensions>
-                                                    <viz.data:measures>
-                                                        <viz.data:MeasureDefinition name="销售总额"
-                                                            value="{FiData>sales}" />
-                                                        <viz.data:MeasureDefinition name="成本总额"
-                                                            value="{FiData>cost}" />
-                                                        <viz.data:MeasureDefinition name="应收总额"
-                                                            value="{FiData>ar_total}" />
-                                                        <viz.data:MeasureDefinition name="应付总额"
-                                                            value="{FiData>payment_total}" />
-                                                    </viz.data:measures>
-                                                </viz.data:FlattenedDataset>
-                                            </viz:dataset>
+                        <cssgrid:CSSGrid
+                            class="sapUiResponsiveMediumContainerWidth"
+                            gridTemplateColumns="1fr 1fr"
+                            gridGap="1rem"
+                        >
+                            <f:Card class="sapUiTinyMargin">
+                                <f:header>
+                                    <card:Header title="月度数据推移图" />
+                                </f:header>
+                                <f:content>
+                                    <viz:VizFrame
+                                        id="idVizFrame"
+                                        uiConfig="{applicationSet:'fiori'}"
+                                        height="400px"
+                                        width="100%"
+                                        vizType='line'
+                                    >
+                                        <viz:dataset>
+                                            <viz.data:FlattenedDataset
+                                                data="{FiData>/0/data}"
+                                            >
+                                                <viz.data:dimensions>
+                                                    <viz.data:DimensionDefinition
+                                                        name="年月"
+                                                        value="{FiData>yearMonth}"
+                                                    />
+                                                </viz.data:dimensions>
+                                                <viz.data:measures>
+                                                    <viz.data:MeasureDefinition
+                                                        name="销售总额"
+                                                        value="{FiData>sales}"
+                                                    />
+                                                    <viz.data:MeasureDefinition
+                                                        name="成本总额"
+                                                        value="{FiData>cost}"
+                                                    />
+                                                    <viz.data:MeasureDefinition
+                                                        name="应收总额"
+                                                        value="{FiData>ar_total}"
+                                                    />
+                                                    <viz.data:MeasureDefinition
+                                                        name="应付总额"
+                                                        value="{FiData>payment_total}"
+                                                    />
+                                                </viz.data:measures>
+                                            </viz.data:FlattenedDataset>
+                                        </viz:dataset>
 
-                                            <viz:feeds>
-                                                <viz.feeds:FeedItem id='valueAxisFeed1'
-                                                    uid="valueAxis"
-                                                    type="Measure"
-                                                    values="销售总额" />
-                                                <viz.feeds:FeedItem id='valueAxisFeed2'
-                                                    uid="valueAxis"
-                                                    type="Measure"
-                                                    values="成本总额" />
-                                                 <viz.feeds:FeedItem id='valueAxisFeed3'
-                                                    uid="valueAxis"
-                                                    type="Measure"
-                                                    values="应收总额" />
-                                                 <viz.feeds:FeedItem id='valueAxisFeed4'
-                                                    uid="valueAxis"
-                                                    type="Measure"
-                                                    values="应付总额" />
-                                                <viz.feeds:FeedItem id='categoryAxisFeed'
-                                                    uid="categoryAxis"
-                                                    type="Dimension"
-                                                    values="年月" />
-                                            </viz:feeds>
-                                            <viz:dependents>
-                                                <viz:Popover id="idPopOver"></viz:Popover>
-                                            </viz:dependents>
-                                        </viz:VizFrame>
-                                    </f:content>
-                                </f:Card>
-                                <f:Card class="sapUiTinyMargin">
-                                    <f:header>
-                                        <card:Header title="月数据明细" />
-                                    </f:header>
-                                    <f:content>
-                                        <Table id="Table1"
-                                            class="sapUiSmallMarginBottom"
-                                            items="{
+                                        <viz:feeds>
+                                            <viz.feeds:FeedItem
+                                                id='valueAxisFeed1'
+                                                uid="valueAxis"
+                                                type="Measure"
+                                                values="销售总额"
+                                            />
+                                            <viz.feeds:FeedItem
+                                                id='valueAxisFeed2'
+                                                uid="valueAxis"
+                                                type="Measure"
+                                                values="成本总额"
+                                            />
+                                            <viz.feeds:FeedItem
+                                                id='valueAxisFeed3'
+                                                uid="valueAxis"
+                                                type="Measure"
+                                                values="应收总额"
+                                            />
+                                            <viz.feeds:FeedItem
+                                                id='valueAxisFeed4'
+                                                uid="valueAxis"
+                                                type="Measure"
+                                                values="应付总额"
+                                            />
+                                            <viz.feeds:FeedItem
+                                                id='categoryAxisFeed'
+                                                uid="categoryAxis"
+                                                type="Dimension"
+                                                values="年月"
+                                            />
+                                        </viz:feeds>
+                                        <viz:dependents>
+                                            <viz:Popover id="idPopOver" />
+                                        </viz:dependents>
+                                    </viz:VizFrame>
+                                </f:content>
+                            </f:Card>
+                            <f:Card class="sapUiTinyMargin">
+                                <f:header>
+                                    <card:Header title="月数据明细" />
+                                </f:header>
+                                <f:content>
+                                    <Table
+                                        id="Table1"
+                                        class="sapUiSmallMarginBottom"
+                                        items="{
                                                 path: 'FiData>/0/data'
-                                            }">
-                                            <columns>
-                                                <Column
-                                                    width="12em">
-                                                    <Text text="年月" />
-                                                </Column>
-                                                <Column>
-                                                    <Text text="销售总额" />
-                                                </Column>
-                                                <Column>
-                                                    <Text text="成本总额" />
-                                                </Column>
-                                                <Column>
-                                                    <Text text="应付总额" />
-                                                </Column>
-                                                <Column>
-                                                    <Text text="应收总额" />
-                                                </Column>
-                                            </columns>
-                                            <items>
-                                                <ColumnListItem vAlign="Middle">
-                                                    <cells>
-                                                        <Text text="{FiData>year}/{FiData>month}" />
-                                                        <Text text="{FiData>sales}" />
-                                                        <Text text="{FiData>cost}" />
-                                                        <Text text="{FiData>payment_total}" />
-                                                        <Text text="{FiData>ar_total}" />
-                                                    </cells>
-                                                </ColumnListItem>
-                                            </items>
-                                        </Table>
-                                    </f:content>
-                                </f:Card>
-                            </cssgrid:CSSGrid>
-                        </layout:VerticalLayout>
+                                            }"
+                                    >
+                                        <columns>
+                                            <Column width="12em">
+                                                <Text text="年月" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="销售总额" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="成本总额" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="应付总额" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="应收总额" />
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem vAlign="Middle">
+                                                <cells>
+                                                    <Text
+                                                        text="{FiData>year}/{FiData>month}"
+                                                    />
+                                                    <Text
+                                                        text="{FiData>sales}"
+                                                    />
+                                                    <Text
+                                                        text="{FiData>cost}"
+                                                    />
+                                                    <Text
+                                                        text="{FiData>payment_total}"
+                                                    />
+                                                    <Text
+                                                        text="{FiData>ar_total}"
+                                                    />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+                                </f:content>
+                            </f:Card>
+                        </cssgrid:CSSGrid>
                     </IconTabFilter>
                 </items>
             </IconTabBar>
