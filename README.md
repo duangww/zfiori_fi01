@@ -20,6 +20,8 @@
 ## zfiori_fi01
 
 财务指标程序
+### 没使用标准的odata model，消费的普通的restful服务,json model
+### 使用了card控件
 
 ### Starting the generated app
 
