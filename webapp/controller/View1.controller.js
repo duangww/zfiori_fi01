@@ -21,6 +21,9 @@ sap.ui.define([
                 var oVizFrame = this.byId("idVizFrame");
                 // 隐藏标题
                 if (oVizFrame) {
+                    window.addEventListener("resize", function() {
+                    oVizFrame.rerender();
+                    });
                     // 使用 setVizProperties 设置标题可见性为 false
                     oVizFrame.setVizProperties({
                         title: {
@@ -77,7 +80,7 @@ sap.ui.define([
                     //     "Authorization": "Basic " + sAuth
                     // },
                     data: JSON.stringify(oPayload),
-                    success: function (oData) {
+                    success: (oData)=> {
                         //    MessageToast.show("API调用成功");
                         const oData1 = JSON.parse(oData);
                         const oData2 = oData1[0].data.map(item => {
@@ -93,8 +96,19 @@ sap.ui.define([
                         oFiData.setData(oData1);
                         oView.setModel(oFiData, "FiData");
                         console.log(oFiData.getData());
-                      //console.log(oView.getModel("FiData").getProperty("/0/data"));
-
+                       
+                        var oModel = this.getView().getModel("FiData");
+                        var aData = oModel.getProperty("/0/data");
+                    
+                        // 初始渲染时判断屏幕宽度
+                        this._setChartDataByScreen(aData);
+                    
+                        // 监听窗口大小变化
+                        window.addEventListener("resize", () => {
+                            var oModel = this.getView().getModel("FiData");
+                            var aData = oModel.getProperty("/0/data");
+                            this._setChartDataByScreen(aData);
+                        });
                     },
                     error: function (jqXHR, sTextStatus, sError) {
                         console.error("错误详情:", jqXHR.responseText);
@@ -104,6 +118,21 @@ sap.ui.define([
             var oPopOver = this.getView().byId("idPopOver");
             oPopOver.connect(oVizFrame.getVizUid());
             oPopOver.setFormatString(formatPattern.STANDARDFLOAT);
+            },
+            _setChartDataByScreen: function(aData) {
+                var oModel = this.getView().getModel("FiData");
+                var width = window.innerWidth;
+                var aShowData;
+            
+                if (width < 900) {
+                    // 小屏幕只显示最近4个月
+                    aShowData = aData.slice(-4);
+                } else {
+                    // 大屏幕显示最近10个月
+                    aShowData = aData.slice(-10);
+                }
+                // 设置到新路径，供图表绑定
+                oModel.setProperty("/0/chartData", aShowData);
             }
         });
     });
