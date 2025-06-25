@@ -22,15 +22,25 @@
                 class="sapUiResponsiveContentPadding sapUiSmallMarginBegin"
             >
                 <items>
-                    <IconTabFilter text="{FiData>/0/butxt}财务指标">
+                    <IconTabFilter
+                        id="idIconTabFilter"
+                        text="{FiData>/0/butxt}财务指标"
+                    >
                         <cssgrid:CSSGrid
+                            id="idCSSGrid"
                             class="sapUiResponsiveMediumContainerWidth"
                             gridTemplateColumns="1fr 1fr"
                             gridGap="1rem"
                         >
-                            <f:Card class="sapUiTinyMargin">
+                            <f:Card
+                                id="idCard1"
+                                class="sapUiTinyMargin"
+                            >
                                 <f:header>
-                                    <card:Header title="月度数据推移图" />
+                                    <card:Header
+                                        id="idCardHeader1"
+                                        title="月度数据推移图"
+                                    />
                                 </f:header>
                                 <f:content>
                                     <viz:VizFrame
@@ -42,28 +52,34 @@
                                     >
                                         <viz:dataset>
                                             <viz.data:FlattenedDataset
+                                                id="idFlattenedDataset"
                                                 data="{FiData>/0/data}"
                                             >
                                                 <viz.data:dimensions>
                                                     <viz.data:DimensionDefinition
+                                                        id="idDimensionDefinition"
                                                         name="年月"
                                                         value="{FiData>yearMonth}"
                                                     />
                                                 </viz.data:dimensions>
                                                 <viz.data:measures>
                                                     <viz.data:MeasureDefinition
+                                                        id="idMeasureDefinition1"
                                                         name="销售总额"
                                                         value="{FiData>sales}"
                                                     />
                                                     <viz.data:MeasureDefinition
+                                                        id="idMeasureDefinition2"
                                                         name="成本总额"
                                                         value="{FiData>cost}"
                                                     />
                                                     <viz.data:MeasureDefinition
+                                                        id="idMeasureDefinition3"
                                                         name="应收总额"
                                                         value="{FiData>ar_total}"
                                                     />
                                                     <viz.data:MeasureDefinition
+                                                        id="idMeasureDefinition4"
                                                         name="应付总额"
                                                         value="{FiData>payment_total}"
                                                     />
@@ -109,9 +125,15 @@
                                     </viz:VizFrame>
                                 </f:content>
                             </f:Card>
-                            <f:Card class="sapUiTinyMargin">
+                            <f:Card
+                                id="idCard2"
+                                class="sapUiTinyMargin"
+                            >
                                 <f:header>
-                                    <card:Header title="月数据明细" />
+                                    <card:Header
+                                        id="idCardHeader2"
+                                        title="月数据明细"
+                                    />
                                 </f:header>
                                 <f:content>
                                     <Table
@@ -122,38 +144,64 @@
                                             }"
                                     >
                                         <columns>
-                                            <Column width="12em">
-                                                <Text text="年月" />
+                                            <Column
+                                                id="idColumn1"
+                                                width="12em"
+                                            >
+                                                <Text
+                                                    id="idText1"
+                                                    text="年月"
+                                                />
                                             </Column>
-                                            <Column>
-                                                <Text text="销售总额" />
+                                            <Column id="idColumn2">
+                                                <Text
+                                                    id="idText2"
+                                                    text="销售总额"
+                                                />
                                             </Column>
-                                            <Column>
-                                                <Text text="成本总额" />
+                                            <Column id="idColumn3">
+                                                <Text
+                                                    id="idText3"
+                                                    text="成本总额"
+                                                />
                                             </Column>
-                                            <Column>
-                                                <Text text="应付总额" />
+                                            <Column id="idColumn4">
+                                                <Text
+                                                    id="idText4"
+                                                    text="应付总额"
+                                                />
                                             </Column>
-                                            <Column>
-                                                <Text text="应收总额" />
+                                            <Column id="idColumn5">
+                                                <Text
+                                                    id="idText5"
+                                                    text="应收总额"
+                                                />
                                             </Column>
                                         </columns>
                                         <items>
-                                            <ColumnListItem vAlign="Middle">
+                                            <ColumnListItem
+                                                id="idColumnListItem1"
+                                                vAlign="Middle"
+                                            >
                                                 <cells>
                                                     <Text
+                                                        id="idText8"
                                                         text="{FiData>year}/{FiData>month}"
                                                     />
                                                     <Text
+                                                        id="idText9"
                                                         text="{FiData>sales}"
                                                     />
                                                     <Text
+                                                        id="idText10"
                                                         text="{FiData>cost}"
                                                     />
                                                     <Text
+                                                        id="idText11"
                                                         text="{FiData>payment_total}"
                                                     />
                                                     <Text
+                                                        id="idText12"
                                                         text="{FiData>ar_total}"
                                                     />
                                                 </cells>
