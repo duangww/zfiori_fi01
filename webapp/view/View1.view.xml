@@ -53,7 +53,7 @@
                                         <viz:dataset>
                                             <viz.data:FlattenedDataset
                                                 id="idFlattenedDataset"
-                                                data="{FiData>/0/data}"
+                                                data="{FiData>/0/chartData}"
                                             >
                                                 <viz.data:dimensions>
                                                     <viz.data:DimensionDefinition
