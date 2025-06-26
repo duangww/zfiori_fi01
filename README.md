@@ -7,7 +7,7 @@
 |**Generation Platform**<br>Visual Studio Code|
 |**Template Used**<br>simple|
 |**Service Type**<br>OData Url|
-|**Service URL**<br>/sap/opu/odata/sap/ZPDA_STOCK_SRV/
+|**Service URL**<br>http://ip:port/sap/opu/odata/sap/ZPDA_STOCK_SRV/
 |**Module Name**<br>zfiori_fi01|
 |**Application Title**<br>财务指标程序|
 |**Namespace**<br>|
@@ -20,6 +20,8 @@
 ## zfiori_fi01
 
 财务指标程序
+### 没使用标准的odata model，消费的普通的restful服务,json model
+### 使用了card控件
 
 ### Starting the generated app
 
@@ -38,5 +40,3 @@
 #### Pre-requisites:
 
 1. Active NodeJS LTS (Long Term Support) version and associated supported NPM version.  (See https://nodejs.org)
-
-
