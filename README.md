@@ -19,7 +19,7 @@
 
 ## zfiori_fi01
 
-财务指标程序1
+财务指标程序
 
 ### Starting the generated app
 
