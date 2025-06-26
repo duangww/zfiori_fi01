@@ -14,38 +14,25 @@ sap.ui.define([
     function (Controller, JSONModel, DateFormat, MessageToast, 
               integrationLibrary, UI5Date,ChartFormatter,Format) {
         "use strict";
+        /**
+         * @class zfiorifi01.controller.View1
+         * @extends sap.ui.core.mvc.Controller
+         * @description 主视图控制器
+         */
         return Controller.extend("zfiorifi01.controller.View1", {
+            /**
+             * 控制器初始化
+             * @function onInit
+             * @memberof zfiorifi01.controller.View1
+             */
             onInit: function () {
             Format.numericFormatter(ChartFormatter.getInstance());
             var formatPattern = ChartFormatter.DefaultPattern;
                 var oVizFrame = this.byId("idVizFrame");
-                // 隐藏标题
-                if (oVizFrame) {
-                    window.addEventListener("resize", function() {
-                    oVizFrame.rerender();
-                    });
-                    // 使用 setVizProperties 设置标题可见性为 false
-                    oVizFrame.setVizProperties({
-                        title: {
-                            visible: false
-                        },
-                        plotArea: {
-                            dataLabel: {
-                                formatString:formatPattern.SHORTFLOAT_MFD2,
-                                visible: false
-                            }
-                        },
-                        valueAxis: {
-                            label: {
-                                formatString: formatPattern.SHORTFLOAT,
-                                visible: true
-                            },
-                            title: {
-                                visible: false
-                            }
-                        }
-                    });
-                }
+                var oVizFrame2 = this.byId("idVizFrame2");
+                this._setVizFrameProperties(oVizFrame,formatPattern);
+                this._setVizFrameProperties(oVizFrame2,formatPattern);
+              
                 var cardManifests = new JSONModel(),
                     homeIconUrl = sap.ui.require.toUrl("zfiorifi01/images/CompanyLogo.png"),
                     date = DateFormat.getDateInstance({ style: "long" }).format(UI5Date.getInstance());
@@ -101,8 +88,7 @@ sap.ui.define([
                         var aData = oModel.getProperty("/0/data");
                     
                         // 初始渲染时判断屏幕宽度
-                        this._setChartDataByScreen(aData);
-                    
+                        this._setChartDataByScreen(aData);                                       
                         // 监听窗口大小变化
                         window.addEventListener("resize", () => {
                             var oModel = this.getView().getModel("FiData");
@@ -119,6 +105,42 @@ sap.ui.define([
             oPopOver.connect(oVizFrame.getVizUid());
             oPopOver.setFormatString(formatPattern.STANDARDFLOAT);
             },
+            _setVizFrameProperties: function (oVizFrame,formatPattern) {
+                // 隐藏标题
+                if (oVizFrame) {
+                    window.addEventListener("resize", function() {
+                    oVizFrame.rerender();
+                    });
+                    // 使用 setVizProperties 设置标题可见性为 false
+                    oVizFrame.setVizProperties({
+                        title: {
+                            visible: false
+                        },
+                        plotArea: {
+                            dataLabel: {
+                                formatString:formatPattern.SHORTFLOAT_MFD2,
+                                visible: false
+                            }
+                        },
+                        valueAxis: {
+                            label: {
+                                formatString: formatPattern.SHORTFLOAT,
+                                visible: true
+                            },
+                            title: {
+                                visible: false
+                            }
+                        }
+                    });
+                }
+            },
+            /**
+             * 根据屏幕尺寸设置图表数据
+             * @function _setChartDataByScreen
+             * @memberof zfiorifi01.controller.View1
+             * @param {Array} aData - 原始数据数组
+             * @private
+             */
             _setChartDataByScreen: function(aData) {
                 var oModel = this.getView().getModel("FiData");
                 var width = window.innerWidth;
@@ -129,10 +151,11 @@ sap.ui.define([
                     aShowData = aData.slice(-4);
                 } else {
                     // 大屏幕显示最近10个月
-                    aShowData = aData.slice(-10);
+                    aShowData = aData.slice(-8);
                 }
                 // 设置到新路径，供图表绑定
                 oModel.setProperty("/0/chartData", aShowData);
+                            
             }
         });
     });

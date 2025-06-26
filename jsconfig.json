@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "jsx": "preserve",
+        "lib": ["ES6", "DOM"],
+        "checkJs": true,
+        "noEmit": true
+    },
+    "include": [
+        "webapp/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+} 

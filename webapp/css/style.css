@@ -1,44 +1,84 @@
 /* Enter your custom styles here */
 /* ... existing code ... */
 
-/* 自适应布局：小屏幕下一列显示 */
+/* 2x2 网格布局样式 */
 .responsiveGrid {
-    /* 默认两列 */
+    /* 默认两列两行 */
     grid-template-columns: 1fr 1fr !important;
-  }
-  
-  @media (max-width: 900px) {
-    .responsiveGrid {
-      grid-template-columns: 1fr !important; /* 小屏幕下变为一列 */
-    }
-  }
-  
-/* 保证 Card 内容区和 VizFrame 都能自适应 */
+    grid-template-rows: 1fr 1fr !important;
+    gap: 1rem !important;
+    padding: 1rem !important;
+}
+
+/* 卡片样式优化 */
 .responsiveGrid .sapFCard,
 .responsiveGrid .sapF_Card {
-  width: 100% !important;
-  min-width: 0 !important;
-  box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    height: 100% !important;
+    min-height: 400px !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
+/* 卡片内容区域自适应 */
 .responsiveGrid .sapFCard .sapFCardContent,
 .responsiveGrid .sapF_Card .sapFCardContent {
-  width: 100% !important;
-  min-width: 0 !important;
-  box-sizing: border-box !important;
-  padding: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 0 !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
+/* 图表容器自适应 */
 .responsiveGrid .sapFCard .sapUiVizFrame,
 .responsiveGrid .sapF_Card .sapUiVizFrame {
-  width: 100% !important;
-  min-width: 0 !important;
-  box-sizing: border-box !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    flex: 1 !important;
 }
+
+/* 统计摘要卡片样式 */
+#idSummaryVBox {
+    height: 100% !important;
+    justify-content: center !important;
+}
+
+#idSummaryVBox .sapMHBox {
+    padding: 0.5rem 0 !important;
+    border-bottom: 1px solid #e0e0e0 !important;
+}
+
+#idSummaryVBox .sapMHBox:last-child {
+    border-bottom: none !important;
+    font-weight: bold !important;
+    color: #007cc0 !important;
+}
+
+/* 自适应布局：小屏幕下一列显示 */
+@media (max-width: 900px) {
+    .responsiveGrid {
+        grid-template-columns: 1fr !important; /* 小屏幕下变为一列 */
+        grid-template-rows: auto auto auto auto !important; /* 自动高度 */
+    }
+    
+    .responsiveGrid .sapFCard,
+    .responsiveGrid .sapF_Card {
+        min-height: 300px !important;
+    }
+}
+
+/* 保证 Card 内容区和 VizFrame 都能自适应 */
 .responsiveGrid .sapFCard .sapFCardContent,
 .responsiveGrid .sapF_Card .sapFCardContent {
-  overflow-x: auto !important;
+    overflow-x: auto !important;
 }
+
 /* Table 容器自适应宽度 */
 .responsiveTable {
     width: 100% !important;
@@ -46,19 +86,19 @@
     box-sizing: border-box !important;
     display: block !important;
     overflow-x: auto !important;
-  }
-  
-  /* Table 内部内容自适应 */
-  .responsiveTable .sapMListTblRow,
-  .responsiveTable .sapMListTblCell {
+}
+
+/* Table 内部内容自适应 */
+.responsiveTable .sapMListTblRow,
+.responsiveTable .sapMListTblCell {
     white-space: nowrap !important;
-  }
-  
-  /* 小屏幕下，表头和单元格字体缩小 */
-  @media (max-width: 900px) {
+}
+
+/* 小屏幕下，表头和单元格字体缩小 */
+@media (max-width: 900px) {
     .responsiveTable .sapMListTblCell,
     .responsiveTable .sapMListTblHeaderCell {
-      font-size: 12px !important;
-      padding: 4px !important;
+        font-size: 12px !important;
+        padding: 4px !important;
     }
-  }
+}

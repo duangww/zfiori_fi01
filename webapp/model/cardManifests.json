@@ -35,106 +35,19 @@
                 "measureAxis": "valueAxis",
                 "dimensionAxis": "categoryAxis",
                 "data": {
-                    "json": {
-                        "list": [
-                            {
-                                "month": "202406月",
-                                "sales": 15076036.71,
-                                "cost": 20507073.33,
-                                "ar_total": 12865513.6,
-                                "payment_total": 136659137.23
-                            },
-                            {
-                                "month": "202407月",
-                                "sales": 11557963.68,
-                                "cost": 13995148.26,
-                                "ar_total": 11353282.21,
-                                "payment_total": 132275747.24
-                            },
-                            {
-                                "month": "202408月",
-                                "sales": 11872635.41,
-                                "cost": 14234688.44,
-                                "ar_total": 12101998.66,
-                                "payment_total": 121602248.13
-                            },
-                            {
-                                "month": "202409月",
-                                "sales": 20592612.91,
-                                "cost": 20606299.34,
-                                "ar_total": 22673334.57,
-                                "payment_total": 118585588.76
-                            },
-                            {
-                                "month": "202410月",
-                                "sales": 25705579.55,
-                                "cost": 25488939.27,
-                                "ar_total": 36807642.54,
-                                "payment_total": 124835430.31
-                            },
-                            {
-                                "month": "202411月",
-                                "sales": 25874671.19,
-                                "cost": 26704312.64,
-                                "ar_total": 37757938.56,
-                                "payment_total": 118493529.00
-                            },
-                            {
-                                "month": "202412月",
-                                "sales": 28046646.83,
-                                "cost": 26564687.45,
-                                "ar_total": 51023549.45,
-                                "payment_total": 120398244.88
-                            },
-                            {
-                                "month": "202501月",
-                                "sales": 12124885.51,
-                                "cost": 11201583.22,
-                                "ar_total": 50455121.85,
-                                "payment_total": 123076571.83
-                            },
-                            {
-                                "month": "202502月",
-                                "sales": 5562542.59,
-                                "cost": 7465809.10,
-                                "ar_total": 50078827.80,
-                                "payment_total": 124426366.75
-                            },
-                            {
-                                "month": "202503月",
-                                "sales": 9678330.07,
-                                "cost": 11104735.75,
-                                "ar_total": 44609587.08,
-                                "payment_total": 124558557.50
-                            },
-                            {
-                                "month": "202504月",
-                                "sales": 6285587.84,
-                                "cost": 6778016.68,
-                                "ar_total": 36444910.49,
-                                "payment_total": 118950757.63
-                            },
-                            {
-                                "month": "202505月",
-                                "sales": 12586211.21,
-                                "cost": 18529923.60,
-                                "ar_total": 26000067.10,
-                                "payment_total": 111683734.24
-                            }
-                        ]
-                    },
-                    "path": "/list"
+                    "json": "{{parameters>/chartData}}",
+                    "path": "/"
                 },
                 "dimensions": [
                     {
                         "label": "Categories",
-                        "value": "{FiData>month}"
+                        "value": "{yearMonth}"
                     }
                 ],
                 "measures": [
                     {
                         "label": "销售总额",
-                        "value": "{FiData>sales}"
+                        "value": "{sales}"
                     },
                     {
                         "label": "成本总额",
@@ -822,6 +735,51 @@
                         }
                     ]
                 }
+            }
+        }
+    },
+    "testCard": {
+        "sap.app": {
+            "id": "sample.CardsLayout.model.test",
+            "type": "card"
+        },
+        "sap.card": {
+            "type": "Analytical",
+            "header": {
+                "title": "测试卡片"
+            },
+            "content": {
+                "chartType": "Line",
+                "legend": {
+                    "visible": true,
+                    "position": "Bottom"
+                },
+                "plotArea": {
+                    "dataLabel": {
+                        "visible": false
+                    }
+                },
+                "title": {
+                    "visible": false
+                },
+                "measureAxis": "valueAxis",
+                "dimensionAxis": "categoryAxis",
+                "data": {
+                    "json": "{{parameters>/testData}}",
+                    "path": "/"
+                },
+                "dimensions": [
+                    {
+                        "label": "月份",
+                        "value": "{yearMonth}"
+                    }
+                ],
+                "measures": [
+                    {
+                        "label": "销售额",
+                        "value": "{sales}"
+                    }
+                ]
             }
         }
     }
