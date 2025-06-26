@@ -12,6 +12,7 @@
     xmlns:viz.data="sap.viz.ui5.data"
     xmlns:layout="sap.ui.layout"
     xmlns:cssgrid="sap.ui.layout.cssgrid"
+    xmlns:core="sap.ui.core"
 >
     <Page id="page">
         <content>
@@ -24,7 +25,7 @@
                 <items>
                     <IconTabFilter
                         id="idIconTabFilter"
-                        text="{FiData>/0/butxt}财务指标"
+                        text="月度指标"
                     >
                         <cssgrid:CSSGrid
                             id="idCSSGrid"
@@ -300,6 +301,11 @@
                                 </f:content>
                             </f:Card> -->
                         </cssgrid:CSSGrid>
+                    </IconTabFilter>
+                    <IconTabFilter
+                    id="idIconTabFilter2"
+                    text="周指标">
+                    <core:Fragment fragmentName="zfiorifi01.view.fragments.Week" type="XML"/>
                     </IconTabFilter>
                 </items>
             </IconTabBar>
