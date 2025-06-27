@@ -45,7 +45,7 @@
                             <viz.data:dimensions>
                                 <viz.data:DimensionDefinition
                                     id="idDimensionDefinition3"
-                                    name="周"
+                                    name="年周"
                                     value="{WeekData>yearWeek}"
                                 />
                             </viz.data:dimensions>
@@ -81,7 +81,7 @@
                             id='categoryAxisFeed3'
                             uid="categoryAxis"
                             type="Dimension"
-                            values="周"
+                            values="年周"
                         />
                     </viz:feeds>
                     <viz:dependents>

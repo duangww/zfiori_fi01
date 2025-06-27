@@ -1,0 +1,186 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:card="sap.f.cards"
+    xmlns:w="sap.ui.integration.widgets"
+    xmlns:chart="sap.suite.ui.microchart"
+    xmlns:viz="sap.viz.ui5.controls"
+    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+    xmlns:viz.data="sap.viz.ui5.data"
+    xmlns:layout="sap.ui.layout"
+    xmlns:cssgrid="sap.ui.layout.cssgrid"
+>
+
+<cssgrid:CSSGrid
+id="idCSSGrid"
+class="sapUiResponsiveMediumContainerWidth responsiveGrid"
+gridTemplateColumns="1fr 1fr"
+gridTemplateRows="1fr 1fr"
+gridGap="1rem"
+>
+<f:Card
+    id="idCard1"
+    class="sapUiTinyMargin"
+>
+    <f:header>
+        <card:Header
+            id="idCardHeader1"
+            title="月应收和应付额"
+        />
+    </f:header>
+    <f:content>
+        <viz:VizFrame
+            id="idVizFrame"
+            uiConfig="{applicationSet:'fiori'}"
+            height="400px"
+            width="100%"
+            vizType='line'
+        >
+            <viz:dataset>
+                <viz.data:FlattenedDataset
+                    id="idFlattenedDataset"
+                    data="{FiData>/0/chartData}"
+                >
+                    <viz.data:dimensions>
+                        <viz.data:DimensionDefinition
+                            id="idDimensionDefinition"
+                            name="年月"
+                            value="{FiData>yearMonth}"
+                        />
+                    </viz.data:dimensions>
+                    <viz.data:measures>
+                        <viz.data:MeasureDefinition
+                            id="idMeasureDefinition3"
+                            name="应收总额"
+                            value="{FiData>ar_total}"
+                        />
+                        <viz.data:MeasureDefinition
+                            id="idMeasureDefinition4"
+                            name="应付总额"
+                            value="{FiData>payment_total}"
+                        />
+                        <viz.data:MeasureDefinition
+                            id="idMeasureDefinition5"
+                            name="新增应付总额"
+                            value="{FiData>payment}"
+                        />
+                        <viz.data:MeasureDefinition
+                            id="idMeasureDefinition6"
+                            name="新增应收总额"
+                            value="{FiData>ar}"
+                        />
+                    </viz.data:measures>
+                </viz.data:FlattenedDataset>
+            </viz:dataset>
+
+            <viz:feeds>
+                <viz.feeds:FeedItem
+                    id='valueAxisFeed3'
+                    uid="valueAxis"
+                    type="Measure"
+                    values="应收总额"
+                />
+                <viz.feeds:FeedItem
+                    id='valueAxisFeed4'
+                    uid="valueAxis"
+                    type="Measure"
+                    values="应付总额"
+                />
+                <viz.feeds:FeedItem
+                    id='valueAxisFeed5'
+                    uid="valueAxis"
+                    type="Measure"
+                    values="新增应付总额"
+                />
+                <viz.feeds:FeedItem
+                    id='valueAxisFeed6'
+                    uid="valueAxis"
+                    type="Measure"
+                    values="新增应收总额"
+                />
+                <viz.feeds:FeedItem
+                    id='categoryAxisFeed'
+                    uid="categoryAxis"
+                    type="Dimension"
+                    values="年月"
+                />
+            </viz:feeds>
+            <viz:dependents>
+                <viz:Popover id="idPopOver" />
+            </viz:dependents>
+        </viz:VizFrame>
+    </f:content>
+</f:Card>
+<f:Card
+   id="idCard2"
+   class="sapUiTinyMargin">
+    <f:header>
+        <card:Header
+            id="idCardHeader2"
+            title="月销售和成本额"
+        />
+    </f:header>
+    <f:content>
+        <viz:VizFrame
+        id="idVizFrame2"
+        uiConfig="{applicationSet:'fiori'}"
+        height="400px"
+        width="100%"
+        vizType='line'
+    >
+        <viz:dataset>
+            <viz.data:FlattenedDataset
+                id="idFlattenedDataset2"
+                data="{FiData>/0/chartData}"
+            >
+                <viz.data:dimensions>
+                    <viz.data:DimensionDefinition
+                        id="idDimensionDefinition2"
+                        name="年月"
+                        value="{FiData>yearMonth}"
+                    />
+                </viz.data:dimensions>
+                <viz.data:measures>
+                    <viz.data:MeasureDefinition
+                        id="idMeasureDefinition1"
+                        name="销售总额"
+                        value="{FiData>sales}"
+                    />
+                    <viz.data:MeasureDefinition
+                        id="idMeasureDefinition2"
+                        name="成本总额"
+                        value="{FiData>cost}"
+                    />
+                </viz.data:measures>
+            </viz.data:FlattenedDataset>
+        </viz:dataset>
+
+        <viz:feeds>
+            <viz.feeds:FeedItem
+                id='valueAxisFeed1'
+                uid="valueAxis"
+                type="Measure"
+                values="销售总额"
+            />
+            <viz.feeds:FeedItem
+                id='valueAxisFeed2'
+                uid="valueAxis"
+                type="Measure"
+                values="成本总额"
+            />
+            <viz.feeds:FeedItem
+                id='categoryAxisFeed2'
+                uid="categoryAxis"
+                type="Dimension"
+                values="年月"
+            />
+        </viz:feeds>
+        <viz:dependents>
+            <viz:Popover id="idPopOver2" />
+        </viz:dependents>
+    </viz:VizFrame>
+    </f:content>
+</f:Card>
+</cssgrid:CSSGrid>
+</core:FragmentDefinition> 
