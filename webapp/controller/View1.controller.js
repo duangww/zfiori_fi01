@@ -55,49 +55,6 @@ sap.ui.define([
                     }]
                 };
                 var oView = this.getView();
-                $.ajax({
-                    url: "/zbak_inf?ACTION=GET_MONTH",
-                    method: "POST",
-                    contentType: "application/json",
-                    // headers: {
-                    //     "Authorization": "Basic " + sAuth
-                    // },
-                    data: JSON.stringify(oPayload),
-                    success: (oData) => {
-                        //    MessageToast.show("API调用成功");
-                        const oData1 = JSON.parse(oData);
-                        const oData2 = oData1[0].data.map(item => {
-                            const month = item.month;
-                            const formattedMonth = month < 10 ? `0${month}` : `${month}`;
-                            return {
-                                ...item,
-                                month: formattedMonth,  // 将 month 改为字符串格式
-                                yearMonth: item.year + "/" + formattedMonth
-                            };
-                        })
-                        const oFiData = new JSONModel();
-                        oData1[0].data = oData2;
-                        oFiData.setData(oData1);
-                        oView.setModel(oFiData, "FiData");
-
-                        var oModel = this.getView().getModel("FiData");
-                        var aData = oModel.getProperty("/0/data");
-
-                        // 初始渲染时判断屏幕宽度
-                        this._setChartDataByScreen(aData, "FiData");
-                        // 监听窗口大小变化
-                        window.addEventListener("resize", () => {
-                            var oModel = this.getView().getModel("FiData");
-                            var aData = oModel.getProperty("/0/data");
-                            this._setChartDataByScreen(aData, "FiData");
-                        });
-
-                    },
-                    error: function (jqXHR, sTextStatus, sError) {
-                        console.error("错误详情:", jqXHR.responseText);
-                    }
-                });
-
                 var oPopOver = this.getView().byId("idPopOver");
                 var oPopOver2 = this.getView().byId("idPopOver2");
                 var oPopOver3 = this.getView().byId("idPopOver3");
@@ -112,6 +69,7 @@ sap.ui.define([
                 this._setoPopOver(oPopOver5, oVizFrame5, formatPattern);
                 this._setoPopOver(oPopOver6, oVizFrame6, formatPattern);
                 this._setoPopOver(oPopOver7, oVizFrame7, formatPattern);
+                this._getMonthData(oView, oPayload);
                 this._getWeekData(oView, oPayload);
                 this._getDayData(oView);
 
@@ -183,6 +141,50 @@ sap.ui.define([
             _setoPopOver: function (oPopOver, oVizFrame, formatPattern) {
                 oPopOver.connect(oVizFrame.getVizUid());
                 oPopOver.setFormatString(formatPattern.STANDARDFLOAT);
+            },
+            _getMonthData: function (oView, oPayload) {
+                $.ajax({
+                    url: "/zbak_inf?ACTION=GET_MONTH",
+                    method: "POST",
+                    contentType: "application/json",
+                    // headers: {
+                    //     "Authorization": "Basic " + sAuth
+                    // },
+                    data: JSON.stringify(oPayload),
+                    success: (oData) => {
+                        //    MessageToast.show("API调用成功");
+                        const oData1 = JSON.parse(oData);
+                        const oData2 = oData1[0].data.map(item => {
+                            const month = item.month;
+                            const formattedMonth = month < 10 ? `0${month}` : `${month}`;
+                            return {
+                                ...item,
+                                month: formattedMonth,  // 将 month 改为字符串格式
+                                yearMonth: item.year + "/" + formattedMonth
+                            };
+                        })
+                        const oFiData = new JSONModel();
+                        oData1[0].data = oData2;
+                        oFiData.setData(oData1);
+                        oView.setModel(oFiData, "FiData");
+
+                        var oModel = this.getView().getModel("FiData");
+                        var aData = oModel.getProperty("/0/data");
+
+                        // 初始渲染时判断屏幕宽度
+                        this._setChartDataByScreen(aData, "FiData");
+                        // 监听窗口大小变化
+                        window.addEventListener("resize", () => {
+                            var oModel = this.getView().getModel("FiData");
+                            var aData = oModel.getProperty("/0/data");
+                            this._setChartDataByScreen(aData, "FiData");
+                        });
+
+                    },
+                    error: function (jqXHR, sTextStatus, sError) {
+                        console.error("错误详情:", jqXHR.responseText);
+                    }
+                });
             },
             _getWeekData: function (oView, oPayload) {
                 $.ajax({

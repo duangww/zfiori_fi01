@@ -1,7 +1,5 @@
-<mvc:View
-    controllerName="zfiorifi01.controller.View1"
-    xmlns:mvc="sap.ui.core.mvc"
-    displayBlock="true"
+<mvc:View controllerName="zfiorifi01.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m"
     xmlns:f="sap.f"
     xmlns:card="sap.f.cards"
@@ -12,136 +10,21 @@
     xmlns:viz.data="sap.viz.ui5.data"
     xmlns:layout="sap.ui.layout"
     xmlns:cssgrid="sap.ui.layout.cssgrid"
-    xmlns:core="sap.ui.core"
->
+    xmlns:core="sap.ui.core">
     <Page id="page">
         <content>
-            <IconTabBar
-                id="idIconTabBar"
-                select="handleIconTabBarSelect"
+            <IconTabBar id="idIconTabBar" select="handleIconTabBarSelect"
                 headerBackgroundDesign="Transparent"
-                class="sapUiResponsiveContentPadding sapUiSmallMarginBegin"
-            >
+                class="sapUiResponsiveContentPadding sapUiSmallMarginBegin">
                 <items>
-                    <IconTabFilter
-                        id="idIconTabFilter"
-                        text="月度指标"
-                    >
-                    <core:Fragment fragmentName="zfiorifi01.view.fragments.Month" type="XML"/>
-                            <!-- <f:Card
-                                id="idCard3"
-                                class="sapUiTinyMargin"
-                            >
-                                <f:header>
-                                    <card:Header
-                                        id="idCardHeader3"
-                                        title="月数据明细"
-                                    />
-                                </f:header>
-                                <f:content>
-                                    <Table
-                                        id="Table1"
-                                        class="sapUiSmallMarginBottom responsiveTable"
-                                        mode="SingleSelectMaster"
-                                        items="{
-                                                path: 'FiData>/0/data'
-                                            }"
-                                    >
-                                        <columns>
-                                            <Column
-                                                id="idColumn1"
-                                                minScreenWidth="Tablet"
-                                                demandPopin="true"
-                                            >
-                                                <Text
-                                                    id="idText1"
-                                                    text="年月"
-                                                />
-                                            </Column>
-                                            <Column
-                                                id="idColumn2"
-                                                minScreenWidth="Tablet"
-                                                demandPopin="true"
-                                            >
-                                                <Text
-                                                    id="idText2"
-                                                    text="销售总额"
-                                                />
-                                            </Column>
-                                            <Column
-                                                id="idColumn3"
-                                                minScreenWidth="Tablet"
-                                                demandPopin="true"
-                                            >
-                                                <Text
-                                                    id="idText3"
-                                                    text="成本总额"
-                                                />
-                                            </Column>
-                                            <Column
-                                                id="idColumn4"
-                                                minScreenWidth="Tablet"
-                                                demandPopin="true"
-                                            >
-                                                <Text
-                                                    id="idText4"
-                                                    text="应付总额"
-                                                />
-                                            </Column>
-                                            <Column
-                                                id="idColumn5"
-                                                minScreenWidth="Tablet"
-                                                demandPopin="true"
-                                            >
-                                                <Text
-                                                    id="idText5"
-                                                    text="应收总额"
-                                                />
-                                            </Column>
-                                        </columns>
-                                        <items>
-                                            <ColumnListItem
-                                                id="idColumnListItem1"
-                                                vAlign="Middle"
-                                            >
-                                                <cells>
-                                                    <Text
-                                                        id="idText8"
-                                                        text="{FiData>year}/{FiData>month}"
-                                                    />
-                                                    <Text
-                                                        id="idText9"
-                                                        text="{FiData>sales}"
-                                                    />
-                                                    <Text
-                                                        id="idText10"
-                                                        text="{FiData>cost}"
-                                                    />
-                                                    <Text
-                                                        id="idText11"
-                                                        text="{FiData>payment_total}"
-                                                    />
-                                                    <Text
-                                                        id="idText12"
-                                                        text="{FiData>ar_total}"
-                                                    />
-                                                </cells>
-                                            </ColumnListItem>
-                                        </items>
-                                    </Table>
-                                </f:content>
-                            </f:Card> -->
-
+                    <IconTabFilter id="idIconTabFilter" text="月度指标">
+                        <core:Fragment fragmentName="zfiorifi01.view.fragments.Month" type="XML" />
                     </IconTabFilter>
-                    <IconTabFilter
-                    id="idIconTabFilter2"
-                    text="周指标">
-                    <core:Fragment fragmentName="zfiorifi01.view.fragments.Week" type="XML"/>
+                    <IconTabFilter id="idIconTabFilter2" text="周指标">
+                        <core:Fragment fragmentName="zfiorifi01.view.fragments.Week" type="XML" />
                     </IconTabFilter>
-                    <IconTabFilter
-                    id="idIconTabFilter3"
-                    text="日指标">
-                    <core:Fragment fragmentName="zfiorifi01.view.fragments.Day" type="XML"/>
+                    <IconTabFilter id="idIconTabFilter3" text="日指标">
+                        <core:Fragment fragmentName="zfiorifi01.view.fragments.Day" type="XML" />
                     </IconTabFilter>
                 </items>
             </IconTabBar>
