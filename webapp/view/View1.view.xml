@@ -13,6 +13,11 @@
     xmlns:core="sap.ui.core">
     <Page id="page">
         <content>
+            <Button id="btnjt"
+                text="截图"
+                press="onScreenshotAndUpload"
+                class="sapUiResponsiveContentPadding sapUiSmallMarginBegin">
+            </Button>
             <IconTabBar id="idIconTabBar" select="handleIconTabBarSelect"
                 headerBackgroundDesign="Transparent"
                 class="sapUiResponsiveContentPadding sapUiSmallMarginBegin">
@@ -24,7 +29,8 @@
                         <core:Fragment fragmentName="zfiorifi01.view.fragments.Week" type="XML" />
                     </IconTabFilter>
                     <IconTabFilter id="idIconTabFilter3" text="日指标">
-                        <core:Fragment fragmentName="zfiorifi01.view.fragments.Day" type="XML" />
+                        <core:Fragment
+                            fragmentName="zfiorifi01.view.fragments.Day" type="XML" />
                     </IconTabFilter>
                 </items>
             </IconTabBar>

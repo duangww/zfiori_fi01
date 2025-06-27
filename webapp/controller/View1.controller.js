@@ -1,3 +1,4 @@
+/* global html2canvas */
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
@@ -108,6 +109,43 @@ sap.ui.define([
                         }
                     });
                 }
+            },
+            onScreenshotAndUpload: function () {
+                var oView = this.getView();
+                var oIconTabBar = this.byId("idIconTabBar"); // SAPUI5 控件对象
+                var domNode = oIconTabBar.getDomRef(); // 这是原生 DOM 节点
+                html2canvas(domNode).then(function (canvas) {
+                    canvas.toBlob(function (blob) {
+                        // 构造FormData
+                        var formData = new FormData();
+                        formData.append("file", blob, "screenshot.png");
+
+                        // 发送到后端接口
+                        //     fetch("https://your-api-endpoint/upload", {
+                        //       method: "POST",
+                        //       body: formData
+                        //     })
+                        //     .then(response => response.json())
+                        //     .then(data => {
+                        //       MessageToast.show("上传成功！");
+                        //     })
+                        //     .catch(error => {
+                        //       MessageToast.show("上传失败！");
+                        //     });
+                        //   }, "image/png");
+
+                        // 创建一个临时的a标签用于下载
+                        var url = URL.createObjectURL(blob);
+                        var a = document.createElement("a");
+                        a.href = url;
+                        a.download = "screenshot.png";
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        MessageToast.show("截图已保存到本地！");
+                    }, "image/png");
+                });
             },
             /**
              * 根据屏幕尺寸设置图表数据
