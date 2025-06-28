@@ -8,7 +8,14 @@
         "lib": ["ES6", "DOM"],
         "types": ["openui5", "jquery"],
         "checkJs": true,
-        "noEmit": true
+        "noEmit": true,
+        "baseUrl": ".",
+        "paths": {
+            "sap/*": ["node_modules/@types/openui5/sap/*"]
+        },
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
     },
     "include": [
         "webapp/**/*"

@@ -1,4 +1,7 @@
 /* global html2canvas */
+/** @type {function(HTMLElement, any): Promise<HTMLCanvasElement>} */
+var html2canvas;
+
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
@@ -9,16 +12,10 @@ sap.ui.define([
     "sap/viz/ui5/format/ChartFormatter",
     'sap/viz/ui5/api/env/Format'
 ],
-    /**
-     * @param {any} Controller
-     */
+
     function (Controller, JSONModel, DateFormat, MessageToast,
         integrationLibrary, UI5Date, ChartFormatter, Format) {
         "use strict";
-        /**
-         * @class zfiorifi01.controller.View1
-         * @description 主视图控制器
-         */
         return Controller.extend("zfiorifi01.controller.View1", {
             /**
              * 控制器初始化
@@ -26,6 +23,9 @@ sap.ui.define([
              * @memberof zfiorifi01.controller.View1
              */
             onInit: function () {
+                // 显示加载指示器
+                this._showLoadingIndicator();
+                
                 Format.numericFormatter(ChartFormatter.getInstance());
                 var formatPattern = ChartFormatter.DefaultPattern;
                 var oVizFrame = this.byId("idVizFrame");
@@ -35,6 +35,8 @@ sap.ui.define([
                 var oVizFrame5 = this.byId("idVizFrame5");
                 var oVizFrame6 = this.byId("idVizFrame6");
                 var oVizFrame7 = this.byId("idVizFrame7");
+                
+                // 先设置图表属性
                 this._setVizFrameProperties(oVizFrame, formatPattern);
                 this._setVizFrameProperties(oVizFrame2, formatPattern);
                 this._setVizFrameProperties(oVizFrame3, formatPattern);
@@ -42,11 +44,7 @@ sap.ui.define([
                 this._setVizFrameProperties(oVizFrame5, formatPattern);
                 this._setVizFrameProperties(oVizFrame6, formatPattern);
                 this._setVizFrameProperties(oVizFrame7, formatPattern);
-                // 设置 Basic Auth 用户名和密码
-                // var sUser = "";
-                // var sPassword = "";
-                // 构建 Authorization header 值
-                // var sAuth = btoa(sUser + ":" + sPassword);;
+                
                 var oPayload = {
                     "it_bukrs": [{
                         "sign": "I",
@@ -63,17 +61,30 @@ sap.ui.define([
                 var oPopOver5 = this.getView().byId("idPopOver5");
                 var oPopOver6 = this.getView().byId("idPopOver6");
                 var oPopOver7 = this.getView().byId("idPopOver7");
-                this._setoPopOver(oPopOver, oVizFrame, formatPattern);
-                this._setoPopOver(oPopOver2, oVizFrame2, formatPattern);
-                this._setoPopOver(oPopOver3, oVizFrame3, formatPattern);
-                this._setoPopOver(oPopOver4, oVizFrame4, formatPattern);
-                this._setoPopOver(oPopOver5, oVizFrame5, formatPattern);
-                this._setoPopOver(oPopOver6, oVizFrame6, formatPattern);
-                this._setoPopOver(oPopOver7, oVizFrame7, formatPattern);
-                this._getMonthData(oView, oPayload);
-                this._getWeekData(oView, oPayload);
-                this._getDayData(oView);
-
+                
+                // 等待所有数据加载完成后再初始化控件
+                Promise.all([
+                    this._getMonthDataAsync(oView, oPayload),
+                    this._getWeekDataAsync(oView, oPayload),
+                    this._getDayDataAsync(oView)
+                ]).then(() => {
+                    // 所有数据加载完成，初始化 PopOver
+                    this._setoPopOver(oPopOver, oVizFrame, formatPattern);
+                    this._setoPopOver(oPopOver2, oVizFrame2, formatPattern);
+                    this._setoPopOver(oPopOver3, oVizFrame3, formatPattern);
+                    this._setoPopOver(oPopOver4, oVizFrame4, formatPattern);
+                    this._setoPopOver(oPopOver5, oVizFrame5, formatPattern);
+                    this._setoPopOver(oPopOver6, oVizFrame6, formatPattern);
+                    this._setoPopOver(oPopOver7, oVizFrame7, formatPattern);
+                    
+                    // 隐藏加载指示器
+                    this._hideLoadingIndicator();
+                    
+                    MessageToast.show("数据加载完成！");
+                }).catch((error) => {
+                    this._hideLoadingIndicator();
+                    MessageToast.show("数据加载失败：" + error.message);
+                });
             },
             _setVizFrameProperties: function (oVizFrame, formatPattern) {
                 // 隐藏标题
@@ -164,7 +175,7 @@ sap.ui.define([
                     aShowData = aData.slice(-4);
                 } else {
                     // 大屏幕显示最近8个月
-                    aShowData = aData.slice(-8);
+                    aShowData = aData.slice(-7);
                 }
                 // 设置到新路径，供图表绑定
                 switch (ModelName) {
@@ -293,16 +304,6 @@ sap.ui.define([
                         //    MessageToast.show("API调用成功");
                         const oDayData = new JSONModel();
                         const oData1 = JSON.parse(oData);
-                        // const oData2 = oData1[0].data.map(item => {
-                        //     const weekStr = String(item.date);
-                        //     const year = weekStr.substring(0, 4);
-                        //     const week = weekStr.substring(4, 6);
-                        //     return {
-                        //         ...item,
-                        //         yearWeek: `${year}/${week}`
-                        //     };
-                        // });
-                        // oData1[0].data = oData2;
                         oDayData.setData(oData1);
                         oView.setModel(oDayData, "DayData");
                         var oModel = oView.getModel("DayData");
@@ -332,6 +333,162 @@ sap.ui.define([
                 const month = (yesterday.getMonth() + 1 < 10 ? '0' : '') + (yesterday.getMonth() + 1);
                 const day = (yesterday.getDate() < 10 ? '0' : '') + yesterday.getDate();
                 return year + month + day;
+            },
+            _showLoadingIndicator: function () {
+                // 显示加载指示器
+                var oView = this.getView();
+                var oBusyIndicator = this.byId("idBusyIndicator");
+                if (oBusyIndicator) {
+                    oBusyIndicator.setBusy(true);
+                }
+                // 或者显示一个简单的加载消息
+                MessageToast.show("正在加载数据...");
+            },
+            _hideLoadingIndicator: function () {
+                // 隐藏加载指示器
+                var oView = this.getView();
+                var oBusyIndicator = this.byId("idBusyIndicator");
+                if (oBusyIndicator) {
+                    oBusyIndicator.setBusy(false);
+                }
+            },
+            _getMonthDataAsync: function (oView, oPayload) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: "/zbak_inf?ACTION=GET_MONTH",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(oPayload),
+                        success: (oData) => {
+                            try {
+                                const oData1 = JSON.parse(oData);
+                                const oData2 = oData1[0].data.map(item => {
+                                    const month = item.month;
+                                    const formattedMonth = month < 10 ? `0${month}` : `${month}`;
+                                    return {
+                                        ...item,
+                                        month: formattedMonth,
+                                        yearMonth: item.year + "/" + formattedMonth
+                                    };
+                                });
+                                const oFiData = new JSONModel();
+                                oData1[0].data = oData2;
+                                oFiData.setData(oData1);
+                                oView.setModel(oFiData, "FiData");
+
+                                var oModel = this.getView().getModel("FiData");
+                                var aData = oModel.getProperty("/0/data");
+                                this._setChartDataByScreen(aData, "FiData");
+                                
+                                // 监听窗口大小变化
+                                window.addEventListener("resize", () => {
+                                    var oModel = this.getView().getModel("FiData");
+                                    var aData = oModel.getProperty("/0/data");
+                                    this._setChartDataByScreen(aData, "FiData");
+                                });
+                                
+                                resolve();
+                            } catch (error) {
+                                reject(error);
+                            }
+                        },
+                        error: function (jqXHR, sTextStatus, sError) {
+                            reject(new Error("月度数据加载失败: " + sError));
+                        }
+                    });
+                });
+            },
+            _getWeekDataAsync: function (oView, oPayload) {
+                return new Promise((resolve, reject) => {
+                    $.ajax({
+                        url: "/zbak_inf?ACTION=GET_WEEK",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(oPayload),
+                        success: (oData) => {
+                            try {
+                                const oWeekData = new JSONModel();
+                                const oData1 = JSON.parse(oData);
+                                const oData2 = oData1[0].data.map(item => {
+                                    const weekStr = String(item.week);
+                                    const year = weekStr.substring(0, 4);
+                                    const week = weekStr.substring(4, 6);
+                                    return {
+                                        ...item,
+                                        yearWeek: `${year}/${week}`
+                                    };
+                                });
+                                oData1[0].data = oData2;
+                                oWeekData.setData(oData1);
+                                oView.setModel(oWeekData, "WeekData");
+
+                                var oModel = oView.getModel("WeekData");
+                                var aData = oModel.getProperty("/0/data");
+                                this._setChartDataByScreen(aData, "WeekData");
+                                
+                                // 监听窗口大小变化
+                                window.addEventListener("resize", () => {
+                                    const oModel = this.getView().getModel("WeekData");
+                                    const aData = oModel.getProperty("/0/data");
+                                    this._setChartDataByScreen(aData, "WeekData");
+                                });
+                                
+                                resolve();
+                            } catch (error) {
+                                reject(error);
+                            }
+                        },
+                        error: function (jqXHR, sTextStatus, sError) {
+                            reject(new Error("周度数据加载失败: " + sError));
+                        }
+                    });
+                });
+            },
+            _getDayDataAsync: function (oView) {
+                return new Promise((resolve, reject) => {
+                    const yesterday = this._getCurrentDateYYYYMMDD();
+                    const oPayload1 = {
+                        "it_bukrs": [{
+                            "sign": "I",
+                            "option": "EQ",
+                            "low": "1300",
+                            "high": ""
+                        }],
+                        "iv_keydat": yesterday
+                    };
+
+                    $.ajax({
+                        url: "/zbak_inf?ACTION=GET_DAY",
+                        method: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify(oPayload1),
+                        success: (oData) => {
+                            try {
+                                const oDayData = new JSONModel();
+                                const oData1 = JSON.parse(oData);
+                                oDayData.setData(oData1);
+                                oView.setModel(oDayData, "DayData");
+                                var oModel = oView.getModel("DayData");
+                                var aData = oModel.getProperty("/0/data");
+                                this._setChartDataByScreen(aData, "DayData");
+                                
+                                // 监听窗口大小变化
+                                window.addEventListener("resize", () => {
+                                    const oModel = this.getView().getModel("DayData");
+                                    const aData = oModel.getProperty("/0/data");
+                                    this._setChartDataByScreen(aData, "DayData");
+                                });
+                                
+                                resolve();
+                            } catch (error) {
+                                reject(error);
+                            }
+                        },
+                        error: function (jqXHR, sTextStatus, sError) {
+                            reject(new Error("日度数据加载失败: " + sError));
+                        }
+                    });
+                });
             }
         });
     });

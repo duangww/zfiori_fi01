@@ -14,7 +14,8 @@
     "@sap/ux-ui5-tooling": "1",
     "@types/jquery": "^3.5.32",
     "@types/openui5": "^1.136.0",
-    "@ui5/cli": "^3.0.0"
+    "@ui5/cli": "^3.0.0",
+    "typescript": "^5.8.3"
   },
   "scripts": {
     "start": "fiori run --open \"test/flpSandbox.html?sap-ui-xx-viewCache=false#zfiorifi01-display\"",
