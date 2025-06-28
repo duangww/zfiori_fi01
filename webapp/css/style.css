@@ -79,6 +79,30 @@
     overflow-x: auto !important;
 }
 
+/* 优化图表标签显示，防止文字截断 */
+.responsiveGrid .sapUiVizFrame .sapVizChart {
+    overflow: visible !important;
+}
+
+/* 确保图表标签有足够空间 */
+.responsiveGrid .sapFCard,
+.responsiveGrid .sapF_Card {
+    min-width: 300px !important;
+}
+
+/* 小屏幕下优化图表显示 */
+@media (max-width: 900px) {
+    .responsiveGrid .sapFCard,
+    .responsiveGrid .sapF_Card {
+        min-width: 250px !important;
+    }
+    
+    /* 小屏幕下图表标签字体稍小 */
+    .responsiveGrid .sapUiVizFrame .sapVizChart text {
+        font-size: 11px !important;
+    }
+}
+
 /* Table 容器自适应宽度 */
 .responsiveTable {
     width: 100% !important;

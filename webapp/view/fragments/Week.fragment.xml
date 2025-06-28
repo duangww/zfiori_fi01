@@ -117,19 +117,19 @@
                             <viz.data:dimensions>
                                 <viz.data:DimensionDefinition
                                     id="idDimensionDefinition4"
-                                    name="周"
+                                    name="年周"
                                     value="{WeekData>yearWeek}"
                                 />
                             </viz.data:dimensions>
                             <viz.data:measures>
                                 <viz.data:MeasureDefinition
                                     id="idMeasureDefinition9"
-                                    name="订单接收数量"
+                                    name="接收数量"
                                     value="{WeekData>order}"
                                 />
                                 <viz.data:MeasureDefinition
                                     id="idMeasureDefinition10"
-                                    name="订单接收电芯数量"
+                                    name="接收电芯数量"
                                     value="{WeekData>order_ferth}"
                                 />
                             </viz.data:measures>
@@ -141,19 +141,19 @@
                             id='valueAxisFeed9'
                             uid="valueAxis"
                             type="Measure"
-                            values="订单接收数量"
+                            values="接收数量"
                         />
                         <viz.feeds:FeedItem
                             id='valueAxisFeed10'
                             uid="valueAxis"
                             type="Measure"
-                            values="订单接收电芯数量"
+                            values="接收电芯数量"
                         />
                         <viz.feeds:FeedItem
                             id='categoryAxisFeed4'
                             uid="categoryAxis"
                             type="Dimension"
-                            values="周"
+                            values="年周"
                         />
                     </viz:feeds>
                     <viz:dependents>
