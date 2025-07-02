@@ -1,34 +1,25 @@
 <mvc:View controllerName="zfiorifi01.controller.View1"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m"
-    xmlns:f="sap.f"
-    xmlns:card="sap.f.cards"
-    xmlns:w="sap.ui.integration.widgets"
-    xmlns:chart="sap.suite.ui.microchart"
-    xmlns:viz="sap.viz.ui5.controls"
-    xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-    xmlns:viz.data="sap.viz.ui5.data"
-    xmlns:layout="sap.ui.layout"
-    xmlns:cssgrid="sap.ui.layout.cssgrid"
     xmlns:core="sap.ui.core">
-    <Page id="page">
+    <Button id="idjtButton"
+        text="截图"
+        press="onButtonScreenshotPress"
+        class="sapUiResponsiveContentPadding sapUiSmallMarginBegin">
+    </Button>
+    <Page id="idPage">
         <content>
-            <Button id="btnjt"
-                text="截图"
-                press="onScreenshotAndUpload"
-                class="sapUiResponsiveContentPadding sapUiSmallMarginBegin">
-            </Button>
-            <IconTabBar id="idIconTabBar" select="handleIconTabBarSelect"
+            <IconTabBar id="idIconTabBar" select="onIconTabBarSelect"
                 headerBackgroundDesign="Transparent"
                 class="sapUiResponsiveContentPadding sapUiSmallMarginBegin">
                 <items>
                     <IconTabFilter id="idIconTabFilter" text="月度指标">
                         <core:Fragment fragmentName="zfiorifi01.view.fragments.Month" type="XML" />
                     </IconTabFilter>
-                    <IconTabFilter id="idIconTabFilter2" text="周指标">
+                    <IconTabFilter id="idWeekIconTabFilter" text="周指标">
                         <core:Fragment fragmentName="zfiorifi01.view.fragments.Week" type="XML" />
                     </IconTabFilter>
-                    <IconTabFilter id="idIconTabFilter3" text="日指标">
+                    <IconTabFilter id="idDayIconTabFilter" text="日指标">
                         <core:Fragment
                             fragmentName="zfiorifi01.view.fragments.Day" type="XML" />
                     </IconTabFilter>

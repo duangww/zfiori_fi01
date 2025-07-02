@@ -2,6 +2,8 @@
 
 /** @type {function(HTMLElement, any): Promise<HTMLCanvasElement>} */
 var html2canvas;
+var title = "";
+var content = "";
 
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
@@ -86,6 +88,13 @@ sap.ui.define([
                     this._hideLoadingIndicator();
                     MessageToast.show("数据加载失败：" + error.message);
                 });
+            },
+            onIconTabBarSelect: function (oEvent) {
+                // 获取被选中的 IconTabFilter 控件
+                var oSelectedTab = oEvent.getParameter("selectedItem");
+                // 获取 text 属性
+                title = "抚州" + oSelectedTab.getText();
+                content = title;
             },
             _setVizFrameProperties: function (oVizFrame, formatPattern) {
                 // 隐藏标题
@@ -196,15 +205,15 @@ sap.ui.define([
              */
             _sendWx: function (headers, imageUrl) {
                 return new Promise((resolve, reject) => {
+                    console.log(title);
+                    console.log(content);
                     headers["Content-Type"] = "application/json";
                     fetch("/message/wx/send", {
                         method: "POST",
                         headers: headers,
                         body: JSON.stringify({
-                           "title":"抚州月度指标" ,
-                           "content":"抚州月度指标",
-                           "workcodes":"2405000014",
-                           "imageurl":imageUrl
+                            "workcodes": "2405000014,2401000001",
+                            "imageurl": imageUrl
                         })
                     })
                         .then(response => response.json())
@@ -223,18 +232,31 @@ sap.ui.define([
                         });
                 });
             },
-            onScreenshotAndUpload: function () {
+            onButtonScreenshotPress: function () {
                 var oView = this.getView();
                 var oIconTabBar = this.byId("idIconTabBar"); // SAPUI5 控件对象
                 var domNode = oIconTabBar.getDomRef(); // 这是原生 DOM 节点
+                // 递归修正所有子元素
+                function resetFont(node) {
+                    if (node && node.style) {
+                        node.style.letterSpacing = "normal";
+                        node.style.fontFamily = '"Microsoft YaHei", "微软雅黑", Arial, sans-serif';
+                    }
+                    if (node && node.children) {
+                        for (var i = 0; i < node.children.length; i++) {
+                            resetFont(node.children[i]);
+                        }
+                    }
+                }
+                resetFont(domNode);
                 var that = this; // 保存this引用
                 var headers;
-
                 html2canvas(domNode).then(function (canvas) {
                     canvas.toBlob(function (blob) {
                         // 构造FormData
                         var formData = new FormData();
-                        formData.append("file", blob, "screenshot.png");
+                        const imageName = Date.now().toString() + ".png";
+                        formData.append("file", blob, imageName);
 
                         // 先获取token，再上传图片
                         that._getAuthToken()
@@ -250,18 +272,19 @@ sap.ui.define([
                                 // imageUrl 就是上传后的图片地址
                                 console.log("图片上传成功，URL为：", imageUrl);
                                 // 这里可以做后续处理，比如显示图片等
-                                return that._sendWx(headers, imageUrl); 
-                                                              
-                            }).then(function (result){
+                                return that._sendWx(headers, imageUrl);
+
+                            }).then(function (result) {
                                 if (result.code === 200) {
-                                   console.log(result);
+                                    console.log(result);
                                 } else {
-                                  console.log(result);
+                                    console.log(result);
                                 }
                             })
                             .catch(function (error) {
                                 // 处理token获取或上传失败
-                                console.error("上传流程失败：", error.message);
+                                //   console.error("上传流程失败：", error.message);
+                                console.log(error.message);
                             });
                     }, "image/png");
                 });
