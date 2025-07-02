@@ -1,4 +1,5 @@
 /* global html2canvas */
+
 /** @type {function(HTMLElement, any): Promise<HTMLCanvasElement>} */
 var html2canvas;
 
@@ -25,7 +26,7 @@ sap.ui.define([
             onInit: function () {
                 // 显示加载指示器
                 this._showLoadingIndicator();
-                
+
                 Format.numericFormatter(ChartFormatter.getInstance());
                 var formatPattern = ChartFormatter.DefaultPattern;
                 var oVizFrame = this.byId("idVizFrame");
@@ -35,7 +36,7 @@ sap.ui.define([
                 var oVizFrame5 = this.byId("idVizFrame5");
                 var oVizFrame6 = this.byId("idVizFrame6");
                 var oVizFrame7 = this.byId("idVizFrame7");
-                
+
                 // 先设置图表属性
                 this._setVizFrameProperties(oVizFrame, formatPattern);
                 this._setVizFrameProperties(oVizFrame2, formatPattern);
@@ -44,7 +45,7 @@ sap.ui.define([
                 this._setVizFrameProperties(oVizFrame5, formatPattern);
                 this._setVizFrameProperties(oVizFrame6, formatPattern);
                 this._setVizFrameProperties(oVizFrame7, formatPattern);
-                
+
                 var oPayload = {
                     "it_bukrs": [{
                         "sign": "I",
@@ -61,7 +62,7 @@ sap.ui.define([
                 var oPopOver5 = this.getView().byId("idPopOver5");
                 var oPopOver6 = this.getView().byId("idPopOver6");
                 var oPopOver7 = this.getView().byId("idPopOver7");
-                
+
                 // 等待所有数据加载完成后再初始化控件
                 Promise.all([
                     this._getMonthDataAsync(oView, oPayload),
@@ -76,10 +77,10 @@ sap.ui.define([
                     this._setoPopOver(oPopOver5, oVizFrame5, formatPattern);
                     this._setoPopOver(oPopOver6, oVizFrame6, formatPattern);
                     this._setoPopOver(oPopOver7, oVizFrame7, formatPattern);
-                    
+
                     // 隐藏加载指示器
                     this._hideLoadingIndicator();
-                    
+
                     MessageToast.show("数据加载完成！");
                 }).catch((error) => {
                     this._hideLoadingIndicator();
@@ -121,40 +122,147 @@ sap.ui.define([
                     });
                 }
             },
+            /**
+             * 获取认证token
+             * @function _getAuthToken
+             * @memberof zfiorifi01.controller.View1
+             * @returns {Promise<string>} 返回token字符串的Promise
+             * @private
+             */
+            _getAuthToken: function () {
+                return new Promise((resolve, reject) => {
+                    fetch("/common/getToken", {
+                        method: "GET",
+                        headers: {
+                            "Accept": "*/*"
+                        }
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.text();
+                        })
+                        .then(tokenString => {
+                            console.log("获取到的 token:", tokenString);
+                            resolve(tokenString);
+                        })
+                        .catch(error => {
+                            console.error("获取 token 失败:", error);
+                            reject(error);
+                        });
+                });
+            },
+            /**
+             * 上传图片到服务器
+             * @function _upLoadImage
+             * @memberof zfiorifi01.controller.View1
+             * @param {Object} headers - 请求头对象，包含认证信息
+             * @param {FormData} formData - 包含图片文件的 FormData 对象
+             * @returns {Promise<string>} 返回图片 URL 的 Promise
+             * @private
+             */
+            _upLoadImage: function (headers, formData) {
+                return new Promise((resolve, reject) => {
+                    fetch("/file/wx/upload", {
+                        method: "POST",
+                        headers: headers,
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.code === 200) {
+                                console.log('图片URL:', result.data);
+                                // 使用返回的图片URL
+                                resolve(result.data);
+                            } else {
+                                // 上传失败，返回错误信息
+                                reject(new Error(result.msg || "上传失败"));
+                            }
+                        })
+                        .catch(function (error) {
+                            reject(error);
+                        });
+                });
+            },
+            /**
+             * 发送微信消息，推送图片
+             * @function _sendWx
+             * @memberof zfiorifi01.controller.View1
+             * @param {Object} headers - 请求头对象，包含认证信息
+             * @param {string} imageUrl - 已上传图片的 URL
+             * @returns {Promise<Object>} 返回推送结果的 Promise
+             * @private
+             */
+            _sendWx: function (headers, imageUrl) {
+                return new Promise((resolve, reject) => {
+                    headers["Content-Type"] = "application/json";
+                    fetch("/message/wx/send", {
+                        method: "POST",
+                        headers: headers,
+                        body: JSON.stringify({
+                           "title":"抚州月度指标" ,
+                           "content":"抚州月度指标",
+                           "workcodes":"2405000014",
+                           "imageurl":imageUrl
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(result => {
+                            if (result.code === 200) {
+                                console.log('推送成功！');
+                                // 使用返回的图片URL
+                                resolve(result);
+                            } else {
+                                // 上传失败，返回错误信息
+                                reject(new Error(result.msg || "推送失败"));
+                            }
+                        })
+                        .catch(function (error) {
+                            reject(error);
+                        });
+                });
+            },
             onScreenshotAndUpload: function () {
                 var oView = this.getView();
                 var oIconTabBar = this.byId("idIconTabBar"); // SAPUI5 控件对象
                 var domNode = oIconTabBar.getDomRef(); // 这是原生 DOM 节点
+                var that = this; // 保存this引用
+                var headers;
+
                 html2canvas(domNode).then(function (canvas) {
                     canvas.toBlob(function (blob) {
                         // 构造FormData
                         var formData = new FormData();
                         formData.append("file", blob, "screenshot.png");
 
-                        // 发送到后端接口
-                        //     fetch("https://your-api-endpoint/upload", {
-                        //       method: "POST",
-                        //       body: formData
-                        //     })
-                        //     .then(response => response.json())
-                        //     .then(data => {
-                        //       MessageToast.show("上传成功！");
-                        //     })
-                        //     .catch(error => {
-                        //       MessageToast.show("上传失败！");
-                        //     });
-                        //   }, "image/png");
-
-                        // 创建一个临时的a标签用于下载
-                        var url = URL.createObjectURL(blob);
-                        var a = document.createElement("a");
-                        a.href = url;
-                        a.download = "screenshot.png";
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                        MessageToast.show("截图已保存到本地！");
+                        // 先获取token，再上传图片
+                        that._getAuthToken()
+                            .then(function (tokenString) {
+                                // 拿到token后，组装headers
+                                headers = {
+                                    "Authorization": "Bearer " + tokenString
+                                };
+                                // 用token上传图片
+                                return that._upLoadImage(headers, formData);
+                            })
+                            .then(function (imageUrl) {
+                                // imageUrl 就是上传后的图片地址
+                                console.log("图片上传成功，URL为：", imageUrl);
+                                // 这里可以做后续处理，比如显示图片等
+                                return that._sendWx(headers, imageUrl); 
+                                                              
+                            }).then(function (result){
+                                if (result.code === 200) {
+                                   console.log(result);
+                                } else {
+                                  console.log(result);
+                                }
+                            })
+                            .catch(function (error) {
+                                // 处理token获取或上传失败
+                                console.error("上传流程失败：", error.message);
+                            });
                     }, "image/png");
                 });
             },
@@ -245,14 +353,14 @@ sap.ui.define([
                                 var oModel = this.getView().getModel("FiData");
                                 var aData = oModel.getProperty("/0/data");
                                 this._setChartDataByScreen(aData, "FiData");
-                                
+
                                 // 监听窗口大小变化
                                 window.addEventListener("resize", () => {
                                     var oModel = this.getView().getModel("FiData");
                                     var aData = oModel.getProperty("/0/data");
                                     this._setChartDataByScreen(aData, "FiData");
                                 });
-                                
+
                                 resolve();
                             } catch (error) {
                                 reject(error);
@@ -291,14 +399,14 @@ sap.ui.define([
                                 var oModel = oView.getModel("WeekData");
                                 var aData = oModel.getProperty("/0/data");
                                 this._setChartDataByScreen(aData, "WeekData");
-                                
+
                                 // 监听窗口大小变化
                                 window.addEventListener("resize", () => {
                                     const oModel = this.getView().getModel("WeekData");
                                     const aData = oModel.getProperty("/0/data");
                                     this._setChartDataByScreen(aData, "WeekData");
                                 });
-                                
+
                                 resolve();
                             } catch (error) {
                                 reject(error);
@@ -337,14 +445,14 @@ sap.ui.define([
                                 var oModel = oView.getModel("DayData");
                                 var aData = oModel.getProperty("/0/data");
                                 this._setChartDataByScreen(aData, "DayData");
-                                
+
                                 // 监听窗口大小变化
                                 window.addEventListener("resize", () => {
                                     const oModel = this.getView().getModel("DayData");
                                     const aData = oModel.getProperty("/0/data");
                                     this._setChartDataByScreen(aData, "DayData");
                                 });
-                                
+
                                 resolve();
                             } catch (error) {
                                 reject(error);
@@ -356,5 +464,6 @@ sap.ui.define([
                     });
                 });
             }
+
         });
     });

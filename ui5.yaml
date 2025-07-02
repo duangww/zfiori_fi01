@@ -20,6 +20,12 @@ server:
             url: http://192.168.1.164:8020
           - path: /zbak_inf
             url: http://192.168.1.164:8020
+          - path: /common
+            url: http://10.68.50.159
+          - path: /message
+            url: http://10.68.50.159
+          - path: /file
+            url: http://10.68.50.159
             proxyIndex: true
     - name: fiori-tools-appreload
       afterMiddleware: compression

@@ -71,7 +71,7 @@
         }
       },
       "": {
-        "dataSource": "mainService",
+        "dataSource": "",
         "preload": true,
         "settings": {}
       }
