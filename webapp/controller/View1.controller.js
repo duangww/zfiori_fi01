@@ -92,9 +92,12 @@ sap.ui.define([
             onIconTabBarSelect: function (oEvent) {
                 // 获取被选中的 IconTabFilter 控件
                 var oSelectedTab = oEvent.getParameter("selectedItem");
+                console.log(document.querySelectorAll('[id$="idIconTabFilter"]'));
+            //    var oTab = this.byId("idIconTabFilter");
+           //     console.log(oSelectedTab.getId()); // 输出：__xmlview1--idIconTabFilter 之类         
                 // 获取 text 属性
-                title = "抚州" + oSelectedTab.getText();
-                content = title;
+           //     title = "抚州" + oSelectedTab.getText();
+           //     content = title;
             },
             _setVizFrameProperties: function (oVizFrame, formatPattern) {
                 // 隐藏标题
@@ -219,7 +222,8 @@ sap.ui.define([
                         .then(response => response.json())
                         .then(result => {
                             if (result.code === 200) {
-                                console.log('推送成功！');
+                                //   console.log('推送成功！');
+                                MessageToast.show("推送成功！");
                                 // 使用返回的图片URL
                                 resolve(result);
                             } else {
@@ -232,8 +236,9 @@ sap.ui.define([
                         });
                 });
             },
-            onButtonScreenshotPress: function () {
+            onButtonScreenshotPress: function (oEvent) {
                 var oView = this.getView();
+                console.log(this.byId("idjtButton").getId());
                 var oIconTabBar = this.byId("idIconTabBar"); // SAPUI5 控件对象
                 var domNode = oIconTabBar.getDomRef(); // 这是原生 DOM 节点
                 // 递归修正所有子元素
@@ -300,6 +305,7 @@ sap.ui.define([
                 var oModel = this.getView().getModel(ModelName);
                 var width = window.innerWidth;
                 var aShowData;
+                console.log(width);
 
                 if (width < 900) {
                     // 小屏幕只显示最近4个月
@@ -351,12 +357,20 @@ sap.ui.define([
             },
             _getMonthDataAsync: function (oView, oPayload) {
                 return new Promise((resolve, reject) => {
-                    $.ajax({
-                        url: "/zbak_inf?ACTION=GET_MONTH",
+                    fetch("/zbak_inf?ACTION=GET_MONTH", {
                         method: "POST",
-                        contentType: "application/json",
-                        data: JSON.stringify(oPayload),
-                        success: (oData) => {
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oPayload)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("月度数据加载失败: " + response.statusText);
+                            }
+                            return response.text();
+                        })
+                        .then((oData) => {
                             try {
                                 const oData1 = JSON.parse(oData);
                                 const oData2 = oData1[0].data.map(item => {
@@ -388,21 +402,28 @@ sap.ui.define([
                             } catch (error) {
                                 reject(error);
                             }
-                        },
-                        error: function (jqXHR, sTextStatus, sError) {
-                            reject(new Error("月度数据加载失败: " + sError));
-                        }
-                    });
+                        })
+                        .catch(error => {
+                            reject(new Error("月度数据加载失败: " + error.message));
+                        });
                 });
             },
             _getWeekDataAsync: function (oView, oPayload) {
                 return new Promise((resolve, reject) => {
-                    $.ajax({
-                        url: "/zbak_inf?ACTION=GET_WEEK",
+                    fetch("/zbak_inf?ACTION=GET_WEEK", {
                         method: "POST",
-                        contentType: "application/json",
-                        data: JSON.stringify(oPayload),
-                        success: (oData) => {
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oPayload)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("周度数据加载失败: " + response.statusText);
+                            }
+                            return response.text();
+                        })
+                        .then((oData) => {
                             try {
                                 const oWeekData = new JSONModel();
                                 const oData1 = JSON.parse(oData);
@@ -434,11 +455,10 @@ sap.ui.define([
                             } catch (error) {
                                 reject(error);
                             }
-                        },
-                        error: function (jqXHR, sTextStatus, sError) {
-                            reject(new Error("周度数据加载失败: " + sError));
-                        }
-                    });
+                        })
+                        .catch(error => {
+                            reject(new Error("周度数据加载失败: " + error.message));
+                        });
                 });
             },
             _getDayDataAsync: function (oView) {
@@ -454,12 +474,20 @@ sap.ui.define([
                         "iv_keydat": yesterday
                     };
 
-                    $.ajax({
-                        url: "/zbak_inf?ACTION=GET_DAY",
+                    fetch("/zbak_inf?ACTION=GET_DAY", {
                         method: "POST",
-                        contentType: "application/json",
-                        data: JSON.stringify(oPayload1),
-                        success: (oData) => {
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(oPayload1)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error("日数据加载失败: " + response.statusText);
+                            }
+                            return response.text();
+                        })
+                        .then((oData) => {
                             try {
                                 const oDayData = new JSONModel();
                                 const oData1 = JSON.parse(oData);
@@ -480,11 +508,10 @@ sap.ui.define([
                             } catch (error) {
                                 reject(error);
                             }
-                        },
-                        error: function (jqXHR, sTextStatus, sError) {
-                            reject(new Error("日度数据加载失败: " + sError));
-                        }
-                    });
+                        })
+                        .catch(error => {
+                            reject(new Error("日数据加载失败: " + error.message));
+                        });
                 });
             }
 
