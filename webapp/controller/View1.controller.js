@@ -127,8 +127,7 @@ sap.ui.define([
                         },
                         categoryAxis: {
                             label: {
-                                rotation: "45",
-                                angle: 45
+                                rotation: "45"
                             }
                         }
                     });
