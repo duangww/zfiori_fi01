@@ -60,16 +60,6 @@
                                     name="应付总额"
                                     value="{FiData>payment_total}"
                                 />
-                                <viz.data:MeasureDefinition
-                                    id="idMeasureDefinition5"
-                                    name="新增应付总额"
-                                    value="{FiData>payment}"
-                                />
-                                <viz.data:MeasureDefinition
-                                    id="idMeasureDefinition6"
-                                    name="新增应收总额"
-                                    value="{FiData>ar}"
-                                />
                             </viz.data:measures>
                         </viz.data:FlattenedDataset>
                     </viz:dataset>
@@ -88,6 +78,65 @@
                             values="应付总额"
                         />
                         <viz.feeds:FeedItem
+                            id='categoryAxisFeed'
+                            uid="categoryAxis"
+                            type="Dimension"
+                            values="年月"
+                        />
+                    </viz:feeds>
+                    <viz:dependents>
+                        <viz:Popover id="idPopOver" />
+                    </viz:dependents>
+                </viz:VizFrame>
+            </f:content>
+        </f:Card>
+               <f:Card
+            id="idCardxz"
+            class="sapUiTinyMargin"
+        >
+            <f:header>
+                <card:Header
+                    id="idCardHeaderxz"
+                    title="新增月应收和应付额"
+                />
+            </f:header>
+            <f:content>
+                <viz:VizFrame
+                    id="idVizFramexz"
+                    uiConfig="{applicationSet:'fiori'}"
+                    height="400px"
+                    width="100%"
+                    vizType='line'
+                >
+                    <viz:dataset>
+                        <viz.data:FlattenedDataset
+                            id="idFlattenedDatasetxz"
+                            data="{FiData>/0/chartData}"
+                        >
+                            <viz.data:dimensions>
+                                <viz.data:DimensionDefinition
+                                    id="idDimensionDefinitionxz"
+                                    name="年月"
+                                    value="{FiData>yearMonth}"
+                                />
+                            </viz.data:dimensions>
+                            <viz.data:measures>
+                                <viz.data:MeasureDefinition
+                                    id="idMeasureDefinitionxz1"
+                                    name="新增应付总额"
+                                    value="{FiData>payment}"
+                                />
+                                <viz.data:MeasureDefinition
+                                    id="idMeasureDefinitionxz2"
+                                    name="新增应收总额"
+                                    value="{FiData>ar}"
+                                />
+                            </viz.data:measures>
+                        </viz.data:FlattenedDataset>
+                    </viz:dataset>
+
+                    <viz:feeds>
+                        <viz.feeds:FeedItem
                             id='valueAxisFeed5'
                             uid="valueAxis"
                             type="Measure"
@@ -100,14 +149,14 @@
                             values="新增应收总额"
                         />
                         <viz.feeds:FeedItem
-                            id='categoryAxisFeed'
+                            id='categoryAxisFeedxz'
                             uid="categoryAxis"
                             type="Dimension"
                             values="年月"
                         />
                     </viz:feeds>
                     <viz:dependents>
-                        <viz:Popover id="idPopOver" />
+                        <viz:Popover id="idPopOverxz" />
                     </viz:dependents>
                 </viz:VizFrame>
             </f:content>

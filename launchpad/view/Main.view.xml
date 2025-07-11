@@ -1,0 +1,47 @@
+<mvc:View
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    controllerName="launchpad.controller.Main"
+    displayBlock="true">
+    
+    <Page title="应用启动台" showHeader="true">
+        <content>
+            <f:DynamicPage>
+                <f:header>
+                    <f:DynamicPageHeader pinnable="true">
+                        <VBox>
+                            <Title text="欢迎使用应用启动台" wrapping="true" class="sapUiSmallMarginBottom"/>
+                            <Text text="选择您要使用的应用程序" wrapping="true"/>
+                        </VBox>
+                    </f:DynamicPageHeader>
+                </f:header>
+                
+                <f:content>
+                    <VBox class="sapUiMediumMargin">
+                        <!-- 应用分组 -->
+                        <VBox items="{/groups}">
+                            <Panel headerText="{title}" class="sapUiMediumMarginBottom">
+                                <TileContainer
+                                    tiles="{/apps}"
+                                    visible="{= ${group} === ${title}}">
+                                    <StandardTile
+                                        title="{title}"
+                                        info="{description}"
+                                        icon="{icon}"
+                                        press="onTilePress"
+                                        class="sapUiTinyMarginEnd">
+                                        <customData>
+                                            <core:CustomData key="appUrl" value="{url}" />
+                                        </customData>
+                                    </StandardTile>
+                                </TileContainer>
+                            </Panel>
+                        </VBox>
+                    </VBox>
+                </f:content>
+            </f:DynamicPage>
+        </content>
+    </Page>
+</mvc:View> 

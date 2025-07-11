@@ -32,6 +32,7 @@ sap.ui.define([
                 Format.numericFormatter(ChartFormatter.getInstance());
                 var formatPattern = ChartFormatter.DefaultPattern;
                 var oVizFrame = this.byId("idVizFrame");
+                var oVizFramexz = this.byId("idVizFramexz");
                 var oVizFrame2 = this.byId("idVizFrame2");
                 var oVizFrame3 = this.byId("idVizFrame3");
                 var oVizFrame4 = this.byId("idVizFrame4");
@@ -41,6 +42,7 @@ sap.ui.define([
 
                 // 先设置图表属性
                 this._setVizFrameProperties(oVizFrame, formatPattern);
+                this._setVizFrameProperties(oVizFramexz, formatPattern);
                 this._setVizFrameProperties(oVizFrame2, formatPattern);
                 this._setVizFrameProperties(oVizFrame3, formatPattern);
                 this._setVizFrameProperties(oVizFrame4, formatPattern);
@@ -58,6 +60,7 @@ sap.ui.define([
                 };
                 var oView = this.getView();
                 var oPopOver = this.getView().byId("idPopOver");
+                var oPopOverxz = this.getView().byId("idPopOverxz");
                 var oPopOver2 = this.getView().byId("idPopOver2");
                 var oPopOver3 = this.getView().byId("idPopOver3");
                 var oPopOver4 = this.getView().byId("idPopOver4");
@@ -73,6 +76,7 @@ sap.ui.define([
                 ]).then(() => {
                     // 所有数据加载完成，初始化 PopOver
                     this._setoPopOver(oPopOver, oVizFrame, formatPattern);
+                    this._setoPopOver(oPopOverxz, oVizFramexz, formatPattern);
                     this._setoPopOver(oPopOver2, oVizFrame2, formatPattern);
                     this._setoPopOver(oPopOver3, oVizFrame3, formatPattern);
                     this._setoPopOver(oPopOver4, oVizFrame4, formatPattern);
